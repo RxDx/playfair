@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+import sys
+
 def constroiListaAlfabeto():
     alfabeto = "abcdefghiklmnopqrstuvwxyz"
     lista = []
@@ -120,7 +122,15 @@ def cifraTextoClaro(textoClaro, matriz):
 
 # CIFRADOR.PY
 
-matriz = constroiMatriz("cultuada")
-print matriz
-textoCifrado = cifraTextoClaro(normalizaTextoOriginal("seilasoseiqueeprecisorazaoavidatemsemprerazaonemseimaisoqueescreveraquifoiumpedacinho da musica do vinicius"), matriz)
+if (len(sys.argv) != 3):
+    print "Modo de uso: ./cifrador chave texto\nOBS: se texto estiver com espaço, colocar entre aspas."
+    exit()
+
+f = open("textocifrado.txt", "w")
+
+matriz = constroiMatriz(sys.argv[1])
+# print matriz
+textoCifrado = cifraTextoClaro(normalizaTextoOriginal(sys.argv[2]), matriz)
 print "Texto cifrado: " + textoCifrado
+f.write(textoCifrado)
+f.close()

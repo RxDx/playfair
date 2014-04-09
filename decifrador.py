@@ -171,20 +171,18 @@ for key in f:
     
 pontuacoes = listaDeTextosClaros.values()
 pontuacoes.sort()
-pontuacoes.reverse()
+# pontuacoes.reverse()
 
-temp = 0
-provavelChave = ""
-while (temp < 4):
-    for key, pontuacao in listaDeTextosClaros.iteritems():
-        if pontuacao == pontuacoes[temp]:
-            provavelChave = key
-            
-    print "Provavel " + str(temp) + ": " + str(provavelChave)
-    
-    temp += 1
-
-
+# temp = 0
+# provavelChave = ""
+# while (temp < 4):
+#     for key, pontuacao in listaDeTextosClaros.iteritems():
+#         if pontuacao == pontuacoes[temp]:
+#             provavelChave = key
+#             
+#     print "Provavel " + str(temp) + ": " + str(provavelChave)
+#     
+#     temp += 1
 
 pontuacaoMax = 0
 for pontuacao in pontuacoes:
@@ -197,7 +195,7 @@ for key, pontuacao in listaDeTextosClaros.iteritems():
     if pontuacao == pontuacaoMax:
         provavelChave = key
          
-print "AQUI: " + provavelChave
+print "Chave encontrada: " + provavelChave
 
 matriz = constroiMatriz(provavelChave)
 textoDecifrado = decifraTextoCifrado(textoCifrado, matriz)
