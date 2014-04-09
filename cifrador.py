@@ -122,15 +122,18 @@ def cifraTextoClaro(textoClaro, matriz):
 
 # CIFRADOR.PY
 
-if (len(sys.argv) != 3):
-    print "Modo de uso: ./cifrador chave texto\nOBS: se texto estiver com espaço, colocar entre aspas."
+if (len(sys.argv) != 2):
+    print "Modo de uso: $ python cifrador chave"
     exit()
+
+entrada = open("textoclaro.txt", "r")
+textoClaro = entrada.read()
 
 f = open("textocifrado.txt", "w")
 
 matriz = constroiMatriz(sys.argv[1])
 # print matriz
-textoCifrado = cifraTextoClaro(normalizaTextoOriginal(sys.argv[2]), matriz)
+textoCifrado = cifraTextoClaro(normalizaTextoOriginal(textoClaro), matriz)
 print "Texto cifrado: " + textoCifrado
 f.write(textoCifrado)
 f.close()

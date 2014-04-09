@@ -167,7 +167,7 @@ for key in f:
     listaDeTextosClaros[key] = pontuacao
     
     temp += 1
-    if (temp%5000 == 0): print "palavras analisados: " + str(temp)
+    if (temp%5000 == 0): print "palavras analisadas: " + str(temp)
     
 pontuacoes = listaDeTextosClaros.values()
 pontuacoes.sort()
