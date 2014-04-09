@@ -9,29 +9,6 @@ def constroiListaAlfabeto():
         
     return lista
 
-def normalizaTextoOriginal(textoOriginal):
-    posicaoAtual = 0
-    novoTexto = ""
-    textoOriginal = textoOriginal.lower()
-    textoOriginal = textoOriginal.replace(" ","")
-    textoOriginal = textoOriginal.replace(",","")
-    textoOriginal = textoOriginal.replace(".","")
-    while (posicaoAtual < len(textoOriginal)-1):
-        primeiraLetra = textoOriginal[posicaoAtual]
-        segundaLetra = textoOriginal[posicaoAtual+1]
-        
-        if (primeiraLetra == segundaLetra):
-            novoTexto += primeiraLetra + "x"
-            posicaoAtual += 1
-        else:
-            novoTexto += primeiraLetra + segundaLetra
-            posicaoAtual += 2
-    
-    if (posicaoAtual < len(textoOriginal)):
-        novoTexto += textoOriginal[posicaoAtual] + "x"
-
-    return novoTexto
-
 def normalizaTextoDecifrado(textoDecifrado):
     posicaoAtual = 0
     novoTexto = ""
@@ -85,7 +62,6 @@ def constroiMatriz(key):
     
     return matriz
 
-
 def indiceDoElementoNaMatriz(matriz, elemento):
     posicaoMatriz = 0
     for linha in matriz:
@@ -94,29 +70,6 @@ def indiceDoElementoNaMatriz(matriz, elemento):
                 return [posicaoMatriz/5, posicaoMatriz%5] # retorna [linha, coluna]
             
             posicaoMatriz += 1
-            
-def cifraTextoClaro(textoClaro, matriz):
-    posicaoAtual = 0;
-    textoCifrado = ""
-    while (posicaoAtual < len(textoClaro)):
-        primeiraLetra = textoClaro[posicaoAtual]
-        segundaLetra = textoClaro[posicaoAtual+1]
-        
-        indicePrimeiraLetra = indiceDoElementoNaMatriz(matriz, primeiraLetra)
-        indiceSegundaLetra = indiceDoElementoNaMatriz(matriz, segundaLetra)
-        
-        if (indicePrimeiraLetra[0] == indiceSegundaLetra[0]): # estao na mesma linha
-            textoCifrado += matriz[indicePrimeiraLetra[0]][(indicePrimeiraLetra[1]+1)%5] + matriz[indiceSegundaLetra[0]][(indiceSegundaLetra[1]+1)%5]
-        
-        if (indicePrimeiraLetra[1] == indiceSegundaLetra[1]): # estao na mesma coluna
-            textoCifrado += matriz[(indicePrimeiraLetra[0]+1)%5][indicePrimeiraLetra[1]] + matriz[(indiceSegundaLetra[0]+1)%5][indiceSegundaLetra[1]]
-    
-        if (indicePrimeiraLetra[0] != indiceSegundaLetra[0] and indicePrimeiraLetra[1] != indiceSegundaLetra[1]): # estao em linhas e colunas diferentes
-            textoCifrado += matriz[indicePrimeiraLetra[0]][indiceSegundaLetra[1]] + matriz[indiceSegundaLetra[0]][indicePrimeiraLetra[1]]
-        
-        posicaoAtual+=2
-        
-    return textoCifrado
 
 def decifraTextoCifrado(textoCifrado, matriz):
     posicaoAtual = 0;
@@ -194,16 +147,9 @@ def analisaTexto(texto):
     return A+E+O+S+R+I+DE+RA+ES+OS+AS+DO+QUE+ENT+COM+NTE+EST+AVA
         
 
-# AQUI COMEÇA O PROGRAMA
-matriz = constroiMatriz("cultuada")
-print matriz
-textoCifrado = cifraTextoClaro(normalizaTextoOriginal("seilasoseiqueeprecisorazaoavidatemsemprerazaonemseimaisoqueescreveraquifoiumpedacinho da musica do vinicius"), matriz)
-print "Texto cifrado: " + textoCifrado
 
+# DECIFRADOR.PY
 
-textoDecifrado = decifraTextoCifrado(textoCifrado, matriz)
-textoClaro = normalizaTextoDecifrado(textoDecifrado)
-print "Texto claro: " + textoClaro
 
 f = open('dict.txt', 'r')
 arquivo = open('textocifrado.txt', 'r')
@@ -221,19 +167,39 @@ for key in f:
     listaDeTextosClaros[key] = pontuacao
     
     temp += 1
-    if (temp%5000 == 0): print temp
+    if (temp%5000 == 0): print "palavras analisados: " + str(temp)
     
 pontuacoes = listaDeTextosClaros.values()
+pontuacoes.sort()
+pontuacoes.reverse()
+
+temp = 0
+provavelChave = ""
+while (temp < 4):
+    for key, pontuacao in listaDeTextosClaros.iteritems():
+        if pontuacao == pontuacoes[temp]:
+            provavelChave = key
+            
+    print "Provavel " + str(temp) + ": " + str(provavelChave)
+    
+    temp += 1
+
+
 
 pontuacaoMax = 0
 for pontuacao in pontuacoes:
     if (pontuacao > pontuacaoMax):
         pontuacaoMax = pontuacao
-
-print listaDeTextosClaros
+ 
+# print listaDeTextosClaros
 provavelChave = ""
 for key, pontuacao in listaDeTextosClaros.iteritems():
     if pontuacao == pontuacaoMax:
         provavelChave = key
-        
+         
 print "AQUI: " + provavelChave
+
+matriz = constroiMatriz(provavelChave)
+textoDecifrado = decifraTextoCifrado(textoCifrado, matriz)
+textoClaro = normalizaTextoDecifrado(textoDecifrado)
+print "Texto claro: " + textoClaro
